@@ -24,11 +24,10 @@ const connectDB = async (): Promise<void> => {
       await mongoose.connection.close();
       process.exit(0);
     });
-
   } catch (err) {
     console.error('Could not connect to MongoDB:', err);
     process.exit(1);
   }
 };
 
-export default connectDB; 
+export default connectDB;
