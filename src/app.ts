@@ -5,6 +5,7 @@ import { config } from 'dotenv';
 import connectDB from './config/db';
 import errorHandler from './middleware/errorHandler';
 import pokemonRoutes from './routes/pokemonRoutes';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 
 config();
 
@@ -12,6 +13,10 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.get('/', (req: VercelRequest, res: VercelResponse) => {
+  res.send('Hello from Express on Vercel!');
+});
 
 app.get('/health', (req, res) => {
   const dbStatus = mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected';
