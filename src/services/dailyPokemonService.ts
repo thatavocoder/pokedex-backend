@@ -1,42 +1,11 @@
 import axios from 'axios';
 import Pokemon from '../models/Pokemon';
+import { PokemonData, iPokemonDetails } from '../types/pokemon-details';
+import { SpeciesData } from '../types/pokemon-species';
 import PokemonDetails from '../models/PokemonDetails';
 
-interface Species {
-  name: string;
-  url: string;
-}
-
-interface Sprites {
-  front_default: string;
-  other: {
-    showdown: {
-      front_default: string;
-    };
-  };
-}
-
-interface PokemonData {
-  name: string;
-  species: Species;
-  sprites: Sprites;
-}
-
-interface SpeciesData {
-  color: {
-    name: string;
-  };
-}
-
-export interface PokemonDetails {
-  name: string;
-  image_url: string;
-  id: number;
-  color: string;
-}
-
 export class RandomPokemonService {
-  public static async getDailyPokemon(): Promise<PokemonDetails> {
+  public static async getDailyPokemon(): Promise<iPokemonDetails> {
     try {
       const count = await Pokemon.countDocuments();
 
@@ -54,11 +23,16 @@ export class RandomPokemonService {
 
       const pokemonSpeciesData = await axios.get<SpeciesData>(pokemonData.data.species.url);
 
-      const pokemonDetails: PokemonDetails = {
+      const pokemonDetails: iPokemonDetails = {
         name: pokemonData.data.name,
         image_url: pokemonData.data.sprites.other.showdown.front_default,
         id: dailyPokemon.id,
         color: pokemonSpeciesData.data.color.name,
+        height: pokemonData.data.height,
+        weight: pokemonData.data.weight,
+        base_experience: pokemonData.data.base_experience,
+        abilities: pokemonData.data.abilities.map((ability: any) => ability.ability.name),
+        types: pokemonData.data.types.map((type: any) => type.type.name),
       };
 
       await PokemonDetails.create(pokemonDetails);

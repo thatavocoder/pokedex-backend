@@ -19,6 +19,26 @@ const pokemonDetailsSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  height: {
+    type: Number,
+    required: true,
+  },
+  weight: {
+    type: Number,
+    required: true,
+  },
+  base_experience: {
+    type: Number,
+    required: true,
+  },
+  abilities: {
+    type: [String],
+    required: true,
+  },
+  types: {
+    type: [String],
+    required: true,
+  },
 });
 
 export default mongoose.model('PokemonDetails', pokemonDetailsSchema);

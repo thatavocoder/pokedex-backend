@@ -1,6 +1,7 @@
 import { RequestHandler, Router } from 'express';
-import { getPokemonById, getPokemonList } from '../controllers/pokemonController';
+import { getPokemonList } from '../controllers/pokemonController';
 import { getRandomPokemon } from '../controllers/dailyPokemonController';
+import { getPokemonById } from '../controllers/pokemonByIdController';
 
 const router = Router();
 
