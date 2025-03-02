@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Pokemon from '../models/Pokemon';
+import PokemonDetails from '../models/PokemonDetails';
 
 interface PokemonData {
   name: string;
@@ -46,5 +47,40 @@ export class PokemonService {
 
   private static async getStoredPokemon(): Promise<PokemonData[]> {
     return Pokemon.find().sort('id');
+  }
+
+  public static async getPokemonById(id: string) {
+    const pokemon = await Pokemon.findOne({ id: parseInt(id) });
+
+    if (!pokemon) {
+      throw new Error('Pokemon not found');
+    }
+
+    const pokemonDetails = await PokemonDetails.findOne({ id: parseInt(id) });
+
+    if (!pokemonDetails) {
+      const { url: detailsApiUrl = '' } = pokemon;
+
+      const pokemonData = await axios.get(detailsApiUrl);
+
+      const pokemonSpeciesData = await axios.get(pokemonData.data.species.url);
+
+      const { data: pokemonDetailsInfo } = pokemonData;
+
+      const { data: pokemonSpeciesInfo } = pokemonSpeciesData;
+
+      const pokemonDetails = {
+        id: pokemonDetailsInfo.id,
+        name: pokemonDetailsInfo.name,
+        image_url: pokemonDetailsInfo.sprites.other.showdown.front_default,
+        color: pokemonSpeciesInfo.color.name,
+      };
+
+      await PokemonDetails.create(pokemonDetails);
+
+      return pokemonDetails;
+    }
+
+    return pokemonDetails;
   }
 }

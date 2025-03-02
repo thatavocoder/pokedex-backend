@@ -27,3 +27,14 @@ export const getPokemonList = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getPokemonById = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  const pokemon = await PokemonService.getPokemonById(id);
+
+  res.json({
+    success: true,
+    data: pokemon,
+  });
+};
