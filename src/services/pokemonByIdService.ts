@@ -24,7 +24,8 @@ export class PokemonByIdService {
           name: pokemonData.data.name,
           image_url:
             pokemonData.data.sprites.other.showdown.front_default ??
-            pokemonData.data.sprites.front_default,
+            pokemonData.data.sprites.front_default ??
+            '',
           id: pokemon.id,
           color: pokemonSpeciesData.data.color.name,
           height: pokemonData.data.height,
@@ -39,7 +40,10 @@ export class PokemonByIdService {
         return pokemonDetails;
       }
 
-      return pokemonDetails;
+      return {
+        ...pokemonDetails.toObject(),
+        image_url: pokemonDetails.image_url ?? '',
+      };
     } catch (error) {
       console.error('Error fetching Pokemon by id:', error);
       throw new Error('Error fetching Pokemon by id');

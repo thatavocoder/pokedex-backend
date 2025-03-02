@@ -2,10 +2,18 @@ import { Request, Response } from 'express';
 import { RandomPokemonService } from '../services/dailyPokemonService';
 
 export const getRandomPokemon = async (req: Request, res: Response) => {
-  const dailyPokemon = await RandomPokemonService.getDailyPokemon();
+  try {
+    const dailyPokemon = await RandomPokemonService.getDailyPokemon();
 
-  res.json({
-    success: true,
-    data: dailyPokemon,
-  });
+    res.json({
+      success: true,
+      data: dailyPokemon,
+    });
+  } catch (error) {
+    console.error('Error fetching daily Pokemon:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error fetching daily Pokemon',
+    });
+  }
 };
