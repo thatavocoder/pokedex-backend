@@ -7,7 +7,6 @@ const pokemonDetailsSchema = new mongoose.Schema({
   },
   image_url: {
     type: String,
-    required: true,
   },
   id: {
     type: Number,
