@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { RandomPokemonService } from '../services/dailyPokemonService';
+import { RandomPokemonService } from '../services/randomPokemonService';
 
 export const getRandomPokemon = async (req: Request, res: Response) => {
   try {
