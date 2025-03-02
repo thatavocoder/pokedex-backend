@@ -5,13 +5,6 @@ export const getPokemonList = async (req: Request, res: Response) => {
   try {
     const search = req.query.search as string;
 
-    if (search && search.length < 3) {
-      return res.status(400).json({
-        success: false,
-        error: 'Search term must be at least 3 characters long',
-      });
-    }
-
     const pokemons = await PokemonService.getPokemonList(search);
 
     res.json({

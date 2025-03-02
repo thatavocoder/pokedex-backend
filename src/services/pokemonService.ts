@@ -18,7 +18,7 @@ export class PokemonService {
       await this.fetchAndStorePokemon();
     }
 
-    if (search && search.length >= 3) {
+    if (search) {
       return this.searchPokemon(search);
     }
 
