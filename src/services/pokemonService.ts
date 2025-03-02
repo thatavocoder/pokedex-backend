@@ -32,17 +32,25 @@ export class PokemonService {
   }
 
   private static async fetchAndStorePokemon(): Promise<PokemonData[]> {
-    const response = await axios.get(this.API_URL);
-    const pokemonList = response.data.results;
+    try {
+      // Clear existing data first
+      await Pokemon.deleteMany({});
 
-    const pokemonWithIds = pokemonList.map((pokemon: any) => ({
-      name: pokemon.name,
-      url: pokemon.url,
-      id: parseInt(pokemon.url.split('/')[6]),
-    }));
+      const response = await axios.get(this.API_URL);
+      const pokemonList = response.data.results;
 
-    await Pokemon.insertMany(pokemonWithIds);
-    return pokemonWithIds;
+      const pokemonWithIds = pokemonList.map((pokemon: any) => ({
+        name: pokemon.name,
+        url: pokemon.url,
+        id: parseInt(pokemon.url.split('/')[6]),
+      }));
+
+      await Pokemon.insertMany(pokemonWithIds);
+      return pokemonWithIds;
+    } catch (error) {
+      console.error('Error fetching Pokemon:', error);
+      throw error;
+    }
   }
 
   private static async getStoredPokemon(): Promise<PokemonData[]> {

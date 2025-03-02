@@ -22,7 +22,9 @@ export class PokemonByIdService {
 
         const pokemonDetails: iPokemonDetails = {
           name: pokemonData.data.name,
-          image_url: pokemonData.data.sprites.other.showdown.front_default,
+          image_url:
+            pokemonData.data.sprites.other.showdown.front_default ??
+            pokemonData.data.sprites.front_default,
           id: pokemon.id,
           color: pokemonSpeciesData.data.color.name,
           height: pokemonData.data.height,

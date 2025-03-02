@@ -25,7 +25,9 @@ export class RandomPokemonService {
 
       const pokemonDetails: iPokemonDetails = {
         name: pokemonData.data.name,
-        image_url: pokemonData.data.sprites.other.showdown.front_default,
+        image_url:
+          pokemonData.data.sprites.other.showdown.front_default ??
+          pokemonData.data.sprites.front_default,
         id: dailyPokemon.id,
         color: pokemonSpeciesData.data.color.name,
         height: pokemonData.data.height,
